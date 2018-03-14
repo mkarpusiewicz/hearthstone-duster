@@ -3,34 +3,21 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/mkarpusiewicz/hearthstone-duster/database"
 	"github.com/spf13/cobra"
 )
 
-// userCmd represents the user command
 var userCmd = &cobra.Command{
 	Use:   "user",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Set hearthpwn.com user name for data scraping",
+	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("user called")
+		user := args[0]
+		database.SetHearthPwnUser(user)
+		fmt.Printf("hearthpwn.com user set to: %s", user)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(userCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// userCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// userCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
