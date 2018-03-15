@@ -2,22 +2,29 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
+	"github.com/mkarpusiewicz/hearthstone-duster/database"
+	"github.com/mkarpusiewicz/hearthstone-duster/services"
 	"github.com/spf13/cobra"
 )
 
 // mineCmd represents the mine command
 var mineCmd = &cobra.Command{
 	Use:   "mine",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Synchronize mine cards from hearthpwn.com",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("mine called")
+		user := database.GetHearthPwnUser()
+
+		if user == "" {
+			log.Fatal("No user specified, please use 'user' command to set user name first")
+		}
+
+		myCards := services.GetUserCards(user)
+
+		for _, card := range myCards {
+			fmt.Printf("%s: %d - %t\n", card.Name, card.Count, card.IsGold)
+		}
 	},
 }
 
