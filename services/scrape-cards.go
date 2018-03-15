@@ -3,6 +3,7 @@ package services
 import (
 	"log"
 	"os"
+	"sort"
 	"strconv"
 
 	"github.com/PuerkitoBio/goquery"
@@ -33,6 +34,10 @@ func GetUserCards(userName string) []types.MyCard {
 		goldBool, _ := strconv.ParseBool(gold)
 
 		cards = append(cards, types.MyCard{Name: name, Count: countInt, IsGold: goldBool})
+
+		sort.Slice(cards, func(i, j int) bool {
+			return cards[i].Name < cards[j].Name
+		})
 	})
 
 	return cards

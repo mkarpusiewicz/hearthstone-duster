@@ -1,11 +1,14 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
+	"os"
+	"strconv"
 
+	"github.com/fatih/color"
 	"github.com/mkarpusiewicz/hearthstone-duster/database"
 	"github.com/mkarpusiewicz/hearthstone-duster/services"
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
 
@@ -22,22 +25,29 @@ var mineCmd = &cobra.Command{
 
 		myCards := services.GetUserCards(user)
 
+		cardsCount := 0
+		goldenCount := 0
+
+		table := tablewriter.NewWriter(os.Stdout)
+		table.SetHeader([]string{"Card", "Count", "Type"})
+		table.SetAutoWrapText(false)
+		table.SetColumnAlignment([]int{tablewriter.ALIGN_LEFT, tablewriter.ALIGN_CENTER, tablewriter.ALIGN_CENTER})
 		for _, card := range myCards {
-			fmt.Printf("%s: %d - %t\n", card.Name, card.Count, card.IsGold)
+			if card.IsGold {
+				table.Append([]string{color.YellowString(card.Name), color.YellowString(strconv.Itoa(card.Count)), color.YellowString("GOLDEN")})
+				goldenCount += card.Count
+			} else {
+				table.Append([]string{card.Name, strconv.Itoa(card.Count), ""})
+				cardsCount += card.Count
+			}
 		}
+
+		table.SetFooter([]string{"Total", strconv.Itoa(cardsCount + goldenCount), " "})
+
+		table.Render()
 	},
 }
 
 func init() {
 	syncCmd.AddCommand(mineCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// mineCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// mineCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
