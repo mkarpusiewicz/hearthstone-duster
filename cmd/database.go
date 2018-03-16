@@ -1,36 +1,37 @@
 package cmd
 
 import (
-	"fmt"
+	"os"
+	"strconv"
 
+	"github.com/mkarpusiewicz/hearthstone-duster/services"
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
 
 // databaseCmd represents the database command
 var databaseCmd = &cobra.Command{
 	Use:   "database",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Sync cards database from hearthstonejson.com",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("database called")
+		apiCards := services.GetAPICards()
+
+		cardsCount := 0
+		table := tablewriter.NewWriter(os.Stdout)
+		table.SetHeader([]string{"Card", "Id", "Rarity", "Set", "Type"})
+		table.SetAutoWrapText(false)
+		table.SetAlignment(tablewriter.ALIGN_LEFT)
+		for _, card := range apiCards {
+			table.Append([]string{card.Name, strconv.FormatInt(card.DbfID, 10), card.Rarity, card.Set, card.Type})
+			cardsCount++
+		}
+
+		table.SetFooter([]string{" ", " ", " ", "Total", strconv.Itoa(cardsCount)})
+
+		table.Render()
 	},
 }
 
 func init() {
 	syncCmd.AddCommand(databaseCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// databaseCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// databaseCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
