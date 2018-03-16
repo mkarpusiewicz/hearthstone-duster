@@ -4,6 +4,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/fatih/color"
 	"github.com/mkarpusiewicz/hearthstone-duster/services"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
@@ -22,7 +23,20 @@ var databaseCmd = &cobra.Command{
 		table.SetAutoWrapText(false)
 		table.SetAlignment(tablewriter.ALIGN_LEFT)
 		for _, card := range apiCards {
-			table.Append([]string{card.Name, strconv.FormatInt(card.DbfID, 10), card.Rarity, card.Set, card.Type})
+			rarityString := card.Rarity
+			switch card.Rarity {
+			case "FREE":
+				rarityString = color.WhiteString(card.Rarity)
+			case "COMMON":
+				rarityString = color.HiWhiteString(card.Rarity)
+			case "RARE":
+				rarityString = color.BlueString(card.Rarity)
+			case "EPIC":
+				rarityString = color.MagentaString(card.Rarity)
+			case "LEGENDARY":
+				rarityString = color.YellowString(card.Rarity)
+			}
+			table.Append([]string{card.Name, strconv.FormatInt(card.DbfID, 10), rarityString, card.Set, card.Type})
 			cardsCount++
 		}
 
