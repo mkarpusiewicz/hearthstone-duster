@@ -18,7 +18,7 @@ type CardIncludedInfoAll struct {
 	Id         int64   `json:"dbf_id"`
 	Decks      int64   `json:"decks"`
 	Count      float64 `json:"count"`
-	Popularity string  `json:"popularity"`
+	Popularity float64 `json:"popularity"`
 	WinRate    float64 `json:"winrate"`
 }
 
@@ -28,6 +28,11 @@ type CardIncludedInfo struct {
 	Count      float64 `json:"count"`
 	Popularity float64 `json:"popularity"`
 	WinRate    float64 `json:"winrate"`
+}
+
+type CardUsageData struct {
+	CardsPlayedDetails  CardPlayedResponse
+	CardsInDecksDetails CardIncludedResponse
 }
 
 type CardPlayedResponse struct {
