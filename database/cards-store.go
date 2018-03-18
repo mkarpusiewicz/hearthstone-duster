@@ -37,6 +37,19 @@ func SaveMyCards(cards []types.MyCard) {
 	}
 }
 
+// GetMyCards - Get my cards info to database
+func GetMyCards() []types.MyCard {
+	var myCards []types.MyCard
+	if err := db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(bucketCards)
+		err := json.Unmarshal(b.Get(myCardsKey), &myCards)
+		return err
+	}); err != nil {
+		log.Fatal(err)
+	}
+	return myCards
+}
+
 // GetMyCardsSyncTime - Get time of hearthpwn.com synchronization
 func GetMyCardsSyncTime() time.Time {
 	var syncTime time.Time

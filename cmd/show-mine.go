@@ -1,30 +1,36 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/fatih/color"
 	"github.com/mkarpusiewicz/hearthstone-duster/database"
-	"github.com/mkarpusiewicz/hearthstone-duster/services"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
 
-// mineCmd represents the mine command
-var mineCmd = &cobra.Command{
+var showMineCmd = &cobra.Command{
 	Use:   "mine",
-	Short: "Synchronize mine cards from hearthpwn.com",
+	Short: "Show mine cards from hearthpwn.com last synchronization",
 	Run: func(cmd *cobra.Command, args []string) {
 		user := database.GetHearthPwnUser()
-
 		if user == "" {
 			log.Fatal("No user specified, please use 'user' command to set user name first")
 		}
+		fmt.Printf("\r\nhearthpwn.com user: %s\r\n", user)
 
-		myCards := services.GetUserCards(user)
-		database.SaveMyCards(myCards)
+		mineSyncTime := database.GetMyCardsSyncTime()
+		if mineSyncTime.IsZero() {
+			fmt.Print("hearthpwn.com was not synced yet\r\n")
+			return
+		}
+		fmt.Printf("hearthpwn.com synced at: %s\r\n\r\n", mineSyncTime.Format(time.RFC1123))
+
+		myCards := database.GetMyCards()
 
 		cardsCount := 0
 		goldenCount := 0
@@ -50,5 +56,5 @@ var mineCmd = &cobra.Command{
 }
 
 func init() {
-	syncCmd.AddCommand(mineCmd)
+	showCmd.AddCommand(showMineCmd)
 }
