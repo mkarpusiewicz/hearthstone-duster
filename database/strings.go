@@ -1,9 +1,12 @@
 package database
 
 var (
-	bucketConfig = []byte("config")
+	bucketConfig       = []byte("config")
+	hearthPwnUserKey   = []byte("hearthpwn-user")
+	myCardsSyncTimeKey = []byte("my-cards-sync-time")
 
-	hearthPwnUserKey = []byte("hearthpwn-user")
+	bucketCards = []byte("cards")
+	myCardsKey  = []byte("my-cards")
 )
 
 const (

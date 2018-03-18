@@ -24,6 +24,7 @@ var mineCmd = &cobra.Command{
 		}
 
 		myCards := services.GetUserCards(user)
+		database.SaveMyCards(myCards)
 
 		cardsCount := 0
 		goldenCount := 0

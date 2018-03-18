@@ -38,8 +38,10 @@ func Initialize() {
 	}
 
 	db.Update(func(tx *bolt.Tx) error {
-		if _, bErr := tx.CreateBucketIfNotExists(bucketConfig); err != nil {
-			return fmt.Errorf("create bucket: %s", bErr)
+		for _, bucket := range [][]byte{bucketConfig, bucketCards} {
+			if _, bErr := tx.CreateBucketIfNotExists(bucket); err != nil {
+				return fmt.Errorf("create bucket of '%s' failed: %s", bucket, bErr)
+			}
 		}
 
 		return nil
