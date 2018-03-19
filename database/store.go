@@ -6,26 +6,24 @@ import (
 	"time"
 
 	"github.com/boltdb/bolt"
-	"github.com/mkarpusiewicz/hearthstone-duster/types"
 )
 
-// SaveMyCards - Save my cards info to database
-func SaveMyCards(cards []types.MyCard) {
+func saveCards(cardData interface{}, cardsKey []byte, cardsSyncTimeKey []byte) {
 	if err := db.Update(func(tx *bolt.Tx) error {
-		data, jErr := json.Marshal(cards)
+		data, jErr := json.Marshal(cardData)
 		if jErr != nil {
 			return jErr
 		}
 
 		b := tx.Bucket(bucketCards)
-		pErr := b.Put(myCardsKey, data)
+		pErr := b.Put(cardsKey, data)
 		if pErr != nil {
 			return pErr
 		}
 
 		c := tx.Bucket(bucketConfig)
 		timeBin, _ := time.Now().MarshalBinary()
-		p2Err := c.Put(myCardsSyncTimeKey, timeBin)
+		p2Err := c.Put(cardsSyncTimeKey, timeBin)
 		if p2Err != nil {
 			return p2Err
 		}
@@ -37,25 +35,21 @@ func SaveMyCards(cards []types.MyCard) {
 	}
 }
 
-// GetMyCards - Get my cards info to database
-func GetMyCards() []types.MyCard {
-	var myCards []types.MyCard
+func getCards(cardData interface{}, cardsKey []byte) {
 	if err := db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketCards)
-		err := json.Unmarshal(b.Get(myCardsKey), &myCards)
+		err := json.Unmarshal(b.Get(cardsKey), cardData)
 		return err
 	}); err != nil {
 		log.Fatal(err)
 	}
-	return myCards
 }
 
-// GetMyCardsSyncTime - Get time of hearthpwn.com synchronization
-func GetMyCardsSyncTime() time.Time {
+func getCardsSyncTime(cardsSyncTimeKey []byte) time.Time {
 	var syncTime time.Time
 	if err := db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketConfig)
-		syncTime.UnmarshalBinary(b.Get(myCardsSyncTimeKey))
+		syncTime.UnmarshalBinary(b.Get(cardsSyncTimeKey))
 		return nil
 	}); err != nil {
 		log.Fatal(err)

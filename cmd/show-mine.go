@@ -23,12 +23,12 @@ var showMineCmd = &cobra.Command{
 		}
 		fmt.Printf("\r\nhearthpwn.com user: %s\r\n", user)
 
-		mineSyncTime := database.GetMyCardsSyncTime()
-		if mineSyncTime.IsZero() {
+		syncTime := database.GetMyCardsSyncTime()
+		if syncTime.IsZero() {
 			fmt.Print("hearthpwn.com was not synced yet\r\n")
 			return
 		}
-		fmt.Printf("hearthpwn.com synced at: %s\r\n\r\n", mineSyncTime.Format(time.RFC1123))
+		fmt.Printf("hearthpwn.com synced at: %s\r\n\r\n", syncTime.Format(time.RFC1123))
 
 		myCards := database.GetMyCards()
 

@@ -27,7 +27,14 @@ var infoCmd = &cobra.Command{
 		if mineSyncTime.IsZero() {
 			fmt.Print("hearthpwn.com was not synced yet\r\n")
 		} else {
-			fmt.Printf("hearthpwn.com synced at: %s\r\n", mineSyncTime.Format(time.RFC1123))
+			fmt.Printf("hearthpwn.com synced at: \t%s\r\n", mineSyncTime.Format(time.RFC1123))
+		}
+
+		cardsUsageSyncTime := database.GetCardsUsageSyncTime()
+		if cardsUsageSyncTime.IsZero() {
+			fmt.Print("hsreplay.net was not synced yet\r\n")
+		} else {
+			fmt.Printf("hsreplay.net synced at: \t%s\r\n", cardsUsageSyncTime.Format(time.RFC1123))
 		}
 	},
 }
