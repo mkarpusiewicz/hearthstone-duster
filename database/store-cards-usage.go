@@ -11,7 +11,7 @@ func SaveCardsUsage(cardsUsage types.CardUsageData) {
 	saveCards(cardsUsage, cardsUsageKey, cardsUsageSyncTimeKey)
 }
 
-// GetCardsUsage - Get cards cards from database
+// GetCardsUsage - Get cards usage from database
 func GetCardsUsage() types.CardUsageData {
 	var cardsUsage types.CardUsageData
 	getCards(&cardsUsage, cardsUsageKey)

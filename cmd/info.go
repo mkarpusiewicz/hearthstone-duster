@@ -36,6 +36,13 @@ var infoCmd = &cobra.Command{
 		} else {
 			fmt.Printf("hsreplay.net synced at: \t%s\r\n", cardsUsageSyncTime.Format(time.RFC1123))
 		}
+
+		cardsDatabaseSyncTime := database.GetCardsDatabaseSyncTime()
+		if cardsDatabaseSyncTime.IsZero() {
+			fmt.Print("hearthstonejson.com was not synced yet\r\n")
+		} else {
+			fmt.Printf("hearthstonejson.com synced at: \t%s\r\n", cardsDatabaseSyncTime.Format(time.RFC1123))
+		}
 	},
 }
 

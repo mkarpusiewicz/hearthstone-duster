@@ -11,6 +11,9 @@ var (
 
 	cardsUsageKey         = []byte("cards-usage")
 	cardsUsageSyncTimeKey = []byte("cards-usage-sync-time")
+
+	cardsDatabaseKey        = []byte("cards-database")
+	cardsDatabaseyncTimeKey = []byte("cards-database-sync-time")
 )
 
 const (
