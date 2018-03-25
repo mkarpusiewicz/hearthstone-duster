@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// syncCmd represents the sync command
 var showCmd = &cobra.Command{
 	Use:   "show",
 	Short: "Show synced information overview",

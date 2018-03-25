@@ -18,7 +18,7 @@ var syncDatabaseCmd = &cobra.Command{
 
 		cardsCount := len(apiCards)
 
-		fmt.Printf("Synced %d cards\r\n", cardsCount)
+		fmt.Printf("Synced database of %d cards\r\n", cardsCount)
 	},
 }
 
