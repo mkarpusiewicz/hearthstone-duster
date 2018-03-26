@@ -2,6 +2,7 @@ package database
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"time"
 
@@ -38,7 +39,11 @@ func saveCards(cardData interface{}, cardsKey []byte, cardsSyncTimeKey []byte) {
 func getCards(cardData interface{}, cardsKey []byte) {
 	if err := db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketCards)
-		err := json.Unmarshal(b.Get(cardsKey), cardData)
+		data := b.Get(cardsKey)
+		if data == nil {
+			return errors.New("No data was found, synchronization required")
+		}
+		err := json.Unmarshal(data, cardData)
 		return err
 	}); err != nil {
 		log.Fatal(err)
