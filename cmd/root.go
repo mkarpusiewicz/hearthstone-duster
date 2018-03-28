@@ -24,6 +24,7 @@ hs sync
 hs dust 1.0`,
 }
 
+// Execute main command
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
