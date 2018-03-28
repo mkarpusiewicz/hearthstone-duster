@@ -1,8 +1,8 @@
 package services
 
 import (
+	"fmt"
 	"log"
-	"os"
 	"sort"
 	"strconv"
 
@@ -14,11 +14,12 @@ const urlFormat string = "https://www.hearthpwn.com/members/%s/collection"
 
 // GetUserCards - Scrape hearthpwn for user cards
 func GetUserCards(userName string) []types.MyCard {
-	//doc, err := goquery.NewDocument(fmt.Sprintf(urlFormat, userName))
-	file, _ := os.Open("_tools/hearthpwn.html")
-	defer file.Close()
+	doc, err := goquery.NewDocument(fmt.Sprintf(urlFormat, userName))
 
-	doc, err := goquery.NewDocumentFromReader(file)
+	//file, _ := os.Open("_tools/hearthpwn.html")
+	//defer file.Close()
+	//doc, err := goquery.NewDocumentFromReader(file)
+
 	if err != nil {
 		log.Fatal(err)
 	}

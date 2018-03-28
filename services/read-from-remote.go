@@ -2,6 +2,7 @@ package services
 
 import (
 	"bytes"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -17,4 +18,12 @@ func readFromRemote(url string) []byte {
 	buf.ReadFrom(resp.Body)
 
 	return buf.Bytes()
+}
+
+func readFromLocal(file string) []byte {
+	respByte, err := ioutil.ReadFile("_tools/cards_collectible.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return respByte
 }

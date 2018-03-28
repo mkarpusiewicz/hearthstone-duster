@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 
 	"github.com/mkarpusiewicz/hearthstone-duster/types"
@@ -24,12 +23,8 @@ func GetUsageInformation() types.CardUsageData {
 func getPlayedCards() types.CardPlayedResponse {
 	var result types.CardPlayedResponse
 
-	//respByte := readFromRemote(cardsPlayedURL)
-
-	respByte, err := ioutil.ReadFile("_tools/card_played.json")
-	if err != nil {
-		log.Fatal(err)
-	}
+	respByte := readFromRemote(cardsPlayedURL)
+	//respByte := readFromLocal("_tools/card_played.json")
 
 	if err := json.Unmarshal(respByte, &result); err != nil {
 		log.Fatal(err)
@@ -41,12 +36,8 @@ func getPlayedCards() types.CardPlayedResponse {
 func getIncludedCards() types.CardIncludedResponse {
 	var result types.CardIncludedResponse
 
-	//respByte := readFromRemote(cardsIncludedURL)
-
-	respByte, err := ioutil.ReadFile("_tools/card_included.json")
-	if err != nil {
-		log.Fatal(err)
-	}
+	respByte := readFromRemote(cardsIncludedURL)
+	//respByte := readFromLocal("_tools/card_included.json")
 
 	if err := json.Unmarshal(respByte, &result); err != nil {
 		log.Fatal(err)
