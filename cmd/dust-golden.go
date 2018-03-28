@@ -15,8 +15,9 @@ import (
 )
 
 var dustGoldenCmd = &cobra.Command{
-	Use:   "golden",
-	Short: "Show golden cards which can be dusted",
+	Use:     "golden",
+	Short:   "Show golden cards which can be dusted",
+	Aliases: []string{"g"},
 	Run: func(cmd *cobra.Command, args []string) {
 		myCards := database.GetMyCards()
 		apiCards := database.GetCardsDatabase()
